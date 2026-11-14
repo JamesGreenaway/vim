@@ -46,7 +46,7 @@ backup (or remove the new .vimrc if there was none). The optional packages under
 | Format on save | Synchronous LSP formatting when a running server supports it |
 | Recovery | Persistent undo, swap files and write-time backup protection |
 
-Theme: `vim-code-dark`, selected for a dark VS Code-like palette and support for both 256-color and 8/16-color terminals. It enables `termguicolors` when Vim reports that feature. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
+Theme: `vim-code-dark`, configured with a transparent editor and statusline background. It supports both 256-color and 8/16-color terminals. It enables `termguicolors` when Vim reports that feature. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
 
 ## Key bindings
 

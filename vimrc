@@ -23,6 +23,7 @@ if has('clipboard') | set clipboard=unnamedplus | endif
 " Dark theme uses cterm colors when truecolor is unavailable.
 if has('termguicolors') | set termguicolors | endif
 let g:codedark_modern = 1
+let g:codedark_transparent = 1
 for s:kind in ['undo', 'swap', 'backup']
   call mkdir(s:vimdir . '/state/' . s:kind, 'p', 0700)
 endfor
@@ -134,6 +135,8 @@ if has('packages')
   packadd editorconfig-vim
   packadd vim-code-dark
   colorscheme codedark
+  highlight StatusLine ctermbg=NONE guibg=NONE
+  highlight StatusLineNC ctermbg=NONE guibg=NONE
   if has('job') && has('channel')
     packadd vim-lsp
     packadd asyncomplete.vim
