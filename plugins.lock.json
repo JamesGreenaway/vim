@@ -1,0 +1,30 @@
+[
+  {
+    "repo": "tpope/vim-commentary",
+    "commit": "64a654ef4a20db1727938338310209b6a63f60c9"
+  },
+  {
+    "repo": "tpope/vim-surround",
+    "commit": "3d188ed2113431cf8dac77be61b842acb64433d9"
+  },
+  {
+    "repo": "editorconfig/editorconfig-vim",
+    "commit": "c0227885a06b155d5aa5465e08b9800e8c939f70"
+  },
+  {
+    "repo": "prabirshrestha/vim-lsp",
+    "commit": "977e704cdbbbbc89a54f8f226d3468b0aa0405c9"
+  },
+  {
+    "repo": "prabirshrestha/asyncomplete.vim",
+    "commit": "17b654a87a834d4e835fb7467e562b4421ad9310"
+  },
+  {
+    "repo": "prabirshrestha/asyncomplete-lsp.vim",
+    "commit": "7cf65e7661a6047f02bd1848ad30581d040896e5"
+  },
+  {
+    "repo": "jiangmiao/auto-pairs",
+    "commit": "39f06b873a8449af8ff6a3eee716d3da14d63a76"
+  }
+]
