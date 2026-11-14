@@ -26,9 +26,5 @@
   {
     "repo": "jiangmiao/auto-pairs",
     "commit": "39f06b873a8449af8ff6a3eee716d3da14d63a76"
-  },
-  {
-    "repo": "zenbones-theme/zenbones.nvim",
-    "commit": "8304d8df9b823ff11e103afa62f38c39f534abe6"
   }
 ]

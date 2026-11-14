@@ -41,12 +41,12 @@ backup (or remove the new .vimrc if there was none). The optional packages under
 | Project indentation | editorconfig/editorconfig-vim |
 | LSP client | prabirshrestha/vim-lsp |
 | Automatic completion | asyncomplete.vim + asyncomplete-lsp.vim |
-| Theme | Zenwritten (minimal dark palette; transparent editor and statusline) |
-| Statusline | Mode, filename, modified/read-only flags, file type, cursor and position |
+| Colours | Vim's built-in syntax colours; transparent editor and muted grey UI |
+| Statusline | Hidden; Insert mode is shown with Vim's `-- INSERT --` indicator |
 | Format on save | Synchronous LSP formatting when a running server supports it |
 | Recovery | Persistent undo, swap files and write-time backup protection |
 
-Theme: Zenwritten, the near-monochrome dark palette from Zenbones. The editor, line number gutter, and statusline backgrounds are cleared for transparency. It enables `termguicolors` when Vim reports that feature. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
+The built-in Vim colour scheme preserves its familiar syntax colours. The editor background is transparent, while line numbers and split separators use muted greys. The statusline is hidden. `termguicolors` is enabled when Vim reports that feature. No third-party theme is installed. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
 
 ## Key bindings
 
@@ -125,7 +125,9 @@ commands above are the standard server entry points, but a-Shell's embedded Node
 and iOS process handling still need a live test. `clang` does not include `clangd`,
 and a usable iOS clangd install is not confirmed.
 
-Open a `.ts`, `.py`, `.html`, `.css`, or `.json` file and run:
+Automatic completion is provided by asyncomplete once a matching LSP server is
+running; asyncomplete's automatic popup is enabled by default. Open a `.ts`,
+`.py`, `.html`, `.css`, or `.json` file and run:
 
 ```vim
 :AshellLspStatus
@@ -134,7 +136,11 @@ Open a `.ts`, `.py`, `.html`, `.css`, or `.json` file and run:
 
 The first command reports whether Vim can find each server command. The second
 reports whether the LSP client has actually started a server for the current
-buffer. Then try `gd` on a known symbol and `K` for hover. A successful save alone
+buffer. In Insert mode, try `Ctrl-X Ctrl-O` to request completion manually. If
+that works but suggestions do not appear while typing, the LSP is connected and
+the issue is specifically with automatic completion. If it returns no menu,
+send the output of both status commands and `:messages`. Then try `gd` on a known
+symbol and `K` for hover. A successful save alone
 does not prove formatting ran: test a deliberately misformatted snippet and
 inspect the saved bytes. Formatting only runs when an attached server advertises
 formatting support; if none does, the save proceeds normally.

@@ -15,8 +15,8 @@ set wildmenu wildmode=longest:full,full
 set completeopt=menu,menuone,noselect
 set scrolloff=3 sidescrolloff=3 splitbelow splitright
 set nojoinspaces virtualedit=block
-set laststatus=2
-set statusline=%{toupper(strpart(mode(),0,1))}\ %t%h%r%m%=%y\ %l:%c\ %p%%
+set laststatus=0
+set showmode
 set swapfile writebackup nobackup
 if exists('+signcolumn') | set signcolumn=auto | endif
 if has('clipboard') | set clipboard=unnamedplus | endif
@@ -132,18 +132,15 @@ if has('packages')
   packadd auto-pairs
   packadd vim-surround
   packadd editorconfig-vim
-  packadd zenbones.nvim
-  colorscheme zenwritten
-  " Keep the muted Zenwritten palette while letting a-Shell show through.
+  " Keep Vim's built-in syntax colours; make editor chrome unobtrusive.
+  colorscheme default
   highlight Normal guibg=NONE ctermbg=NONE
   highlight NormalNC guibg=NONE ctermbg=NONE
   highlight NormalFloat guibg=NONE ctermbg=NONE
-  highlight LineNr guibg=NONE ctermbg=NONE
-  highlight SignColumn guibg=NONE ctermbg=NONE
-  highlight EndOfBuffer guibg=NONE ctermbg=NONE
-  highlight VertSplit guibg=NONE ctermbg=NONE
-  highlight StatusLine guibg=NONE ctermbg=NONE
-  highlight StatusLineNC guibg=NONE ctermbg=NONE
+  highlight LineNr guifg=#777777 guibg=NONE ctermfg=8 ctermbg=NONE
+  highlight SignColumn guifg=#777777 guibg=NONE ctermfg=8 ctermbg=NONE
+  highlight EndOfBuffer guifg=#555555 guibg=NONE ctermfg=8 ctermbg=NONE
+  highlight VertSplit guifg=#555555 guibg=NONE ctermfg=8 ctermbg=NONE
   if has('job') && has('channel')
     packadd vim-lsp
     packadd asyncomplete.vim
