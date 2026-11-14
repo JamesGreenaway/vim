@@ -1,4 +1,4 @@
-" James's a-Shell Vim configuration. No theme; no Neovim APIs.
+" James's a-Shell Vim configuration. No Neovim APIs.
 set nocompatible
 let mapleader = ' '
 let s:config = resolve(expand('<sfile>:p'))
@@ -15,11 +15,14 @@ set wildmenu wildmode=longest:full,full
 set completeopt=menu,menuone,noselect
 set scrolloff=3 sidescrolloff=3 splitbelow splitright
 set nojoinspaces virtualedit=block
-set laststatus=2 statusline=%f\ %h%r%m%=%l:%c\ %p%%
+set laststatus=2
+set statusline=%{toupper(strpart(mode(),0,1))}\ %t%h%r%m%=%y\ %l:%c\ %p%%
 set swapfile writebackup nobackup
 if exists('+signcolumn') | set signcolumn=auto | endif
 if has('clipboard') | set clipboard=unnamedplus | endif
-" Leave terminal colours alone; opt in via local.vim after visual checking.
+" Dark theme uses cterm colors when truecolor is unavailable.
+if has('termguicolors') | set termguicolors | endif
+let g:codedark_modern = 1
 for s:kind in ['undo', 'swap', 'backup']
   call mkdir(s:vimdir . '/state/' . s:kind, 'p', 0700)
 endfor
@@ -75,10 +78,12 @@ let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_format_sync_timeout = 2000
 let g:ashell_format_on_save = 1
 let g:ashell_servers = [
-      \ {'name': 'gopls', 'cmd': ['gopls'], 'allowlist': ['go']},
       \ {'name': 'typescript', 'cmd': ['typescript-language-server', '--stdio'], 'allowlist': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact']},
-      \ {'name': 'clangd', 'cmd': ['clangd'], 'allowlist': ['c', 'cpp', 'objc', 'objcpp']},
-      \ {'name': 'pylsp', 'cmd': ['pylsp'], 'allowlist': ['python']},
+      \ {'name': 'html', 'cmd': ['vscode-html-language-server', '--stdio'], 'allowlist': ['html']},
+      \ {'name': 'css', 'cmd': ['vscode-css-language-server', '--stdio'], 'allowlist': ['css', 'scss', 'less']},
+      \ {'name': 'json', 'cmd': ['vscode-json-language-server', '--stdio'], 'allowlist': ['json', 'jsonc']},
+      \ {'name': 'ruff', 'cmd': ['ruff', 'server'], 'allowlist': ['python']},
+      \ {'name': 'clangd', 'cmd': ['clangd'], 'allowlist': ['c', 'cpp']},
       \ ]
 " Override servers/options here before packages load. Installing a client does
 " not install servers or prove that iOS can execute them.
@@ -127,6 +132,8 @@ if has('packages')
   packadd auto-pairs
   packadd vim-surround
   packadd editorconfig-vim
+  packadd vim-code-dark
+  colorscheme codedark
   if has('job') && has('channel')
     packadd vim-lsp
     packadd asyncomplete.vim
@@ -141,7 +148,7 @@ function! s:Health() abort
   for server in g:ashell_servers
     call add(report, server.name . ' executable: ' . executable(server.cmd[0]))
   endfor
-  call add(report, 'Executable presence is not a server startup test. Use :LspStatus in a source file.')
+  call add(report, 'Executable presence is not a server startup test. Open its file type and use :LspStatus.')
   call add(report, 'Clipboard and colour require visual/device checks; feature flags alone are insufficient.')
   call add(report, 'Fuzzy finders and Treesitter deliberately omitted; fzf hung Vim on device.')
   let reportfile = s:base . '/ashell-vim-health.txt'
@@ -150,3 +157,12 @@ function! s:Health() abort
   echo 'Saved: ' . reportfile
 endfunction
 command! AshellHealth call <SID>Health()
+function! s:LspStatus() abort
+  let report = ['LSP commands (availability only):']
+  for server in g:ashell_servers
+    call add(report, server.name . ': ' . (executable(server.cmd[0]) ? 'found' : 'not found') . ' — ' . join(server.cmd, ' '))
+  endfor
+  call add(report, 'Open a matching source file, then run :LspStatus to check whether the server starts.')
+  echo join(report, "\n")
+endfunction
+command! AshellLspStatus call <SID>LspStatus()

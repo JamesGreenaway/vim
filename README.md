@@ -41,12 +41,12 @@ backup (or remove the new .vimrc if there was none). The optional packages under
 | Project indentation | editorconfig/editorconfig-vim |
 | LSP client | prabirshrestha/vim-lsp |
 | Automatic completion | asyncomplete.vim + asyncomplete-lsp.vim |
+| Theme | vim-code-dark (dark palette with limited-color terminal support) |
+| Statusline | Mode, filename, modified/read-only flags, file type, cursor and position |
 | Format on save | Synchronous LSP formatting when a running server supports it |
 | Recovery | Persistent undo, swap files and write-time backup protection |
 
-No theme, fuzzy finder, Treesitter, Git UI, debugger, Herdr or embedded-terminal
-configuration. fzf was explicitly excluded after it hung Vim on the device.
-No replacement fuzzy-finder plugin is installed.
+Theme: `vim-code-dark`, selected for a dark VS Code-like palette and support for both 256-color and 8/16-color terminals. The config does not force terminal colors to truecolor. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
 
 ## Key bindings
 
@@ -67,6 +67,7 @@ Space is the leader.
 | Space fg | Prefill `:ProjectSearch` |
 | Space fh | Prefill `:help` |
 | Space f= | Format using the active LSP |
+| Statusline | Mode, filename, file type, cursor position and modified marker |
 | gcc / gc{motion} | Comment line / motion (also gc in visual mode) |
 | cs / ds / ys | Change / delete / add surroundings |
 
@@ -86,31 +87,58 @@ Vim's synchronous `:vimgrep`; use `:cd` to select a small project first. Common
 build/dependency directories are excluded. It is not live grep. Space x uses
 ordinary `:bdelete`, not the Neovim split-preserving workaround.
 
-## LSP and formatting: prepared, not yet verified on device
+## LSP and formatting: install, then verify on device
 
-The client and completion plugins are installed. The config registers these
-servers **only if their commands exist**:
+The Vim LSP client is installed. It registers the following commands only when
+Vim can find them on `PATH`:
 
-| Language | Command |
-|---|---|
-| JavaScript/TypeScript | `typescript-language-server --stdio` |
-| Python | `pylsp` |
-| Go | `gopls` |
-| C/C++ | `clangd` |
+| Files | Server command | Status |
+|---|---|---|
+| JavaScript, JSX, TypeScript, TSX | `typescript-language-server --stdio` | Install with npm; a-Shell process compatibility needs checking |
+| HTML | `vscode-html-language-server --stdio` | Install with npm; a-Shell process compatibility needs checking |
+| CSS | `vscode-css-language-server --stdio` | Install with npm; a-Shell process compatibility needs checking |
+| JSON | `vscode-json-language-server --stdio` | Install with npm; a-Shell process compatibility needs checking |
+| Python | `ruff server` | Ruff 0.17.0 is already present on your device; test the embedded LSP |
+| C/C++ | `clangd` | Missing on the device; a-Shell compatible build not confirmed |
+| GLSL | — | Syntax highlighting is working via your installed `vim-glsl`; no GLSL LSP configured |
 
-No server is downloaded automatically. These are registration recipes, not a
-claim that all four servers can run inside iOS. Native desktop executables cannot
-simply be copied into a-Shell. The availability of Node does not prove that a
-server's child processes work there; clang is not clangd. Python server failures
-have also been reported upstream.
+Install the npm-based servers from a-Shell:
 
-In an actual source file, use `:LspStatus`, then test completion and definition.
-A running server must advertise document formatting for format-on-save to apply.
-If no suitable server is running, saving proceeds without formatting. Formatting
-errors from the plugin are shown in `:messages`; a successful save alone is not
-proof of successful formatting. Python's pylsp additionally needs a supported
-formatting provider. Ruff is present on the device but is not automatically used
-as an untested LSP or shell formatter.
+```sh
+npm install -g typescript typescript-language-server vscode-langservers-extracted
+```
+
+Then check they are visible to Vim:
+
+```sh
+which typescript-language-server
+which vscode-html-language-server
+which vscode-css-language-server
+which vscode-json-language-server
+ruff --version
+```
+
+Your installed Ruff includes a native LSP (`ruff server`) that provides diagnostics
+and formatting. It does not provide Python navigation or completion on its own.
+The TypeScript server provides JavaScript/TypeScript language intelligence; HTML,
+CSS and JSON servers provide their corresponding language features. The npm
+commands above are the standard server entry points, but a-Shell's embedded Node
+and iOS process handling still need a live test. `clang` does not include `clangd`,
+and a usable iOS clangd install is not confirmed.
+
+Open a `.ts`, `.py`, `.html`, `.css`, or `.json` file and run:
+
+```vim
+:AshellLspStatus
+:LspStatus
+```
+
+The first command reports whether Vim can find each server command. The second
+reports whether the LSP client has actually started a server for the current
+buffer. Then try `gd` on a known symbol and `K` for hover. A successful save alone
+does not prove formatting ran: test a deliberately misformatted snippet and
+inspect the saved bytes. Formatting only runs when an attached server advertises
+formatting support; if none does, the save proceeds normally.
 
 Create `~/Documents/.vim/local.vim` for overrides. It is not touched by installation
 and is loaded before packages. Example with your own verified server:
@@ -142,8 +170,7 @@ executable discovery do not prove working iOS communication. Remaining device
 checks: clipboard round-trip with Notes, undo after reopening a file, pairing on
 the iOS keyboard, LSP operation and actual formatted bytes after saving.
 
-No theme or forced true colour. Persistent state is under `.vim/state` in
-Documents, avoiding a-Shell's unwritable home directory.
+The colorscheme has 256-color and 8/16-color support; `termguicolors` is enabled when Vim reports the feature. Persistent state is under `.vim/state` in Documents, avoiding a-Shell's unwritable home directory.
 
 ## Validation
 

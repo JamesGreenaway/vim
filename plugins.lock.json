@@ -26,5 +26,9 @@
   {
     "repo": "jiangmiao/auto-pairs",
     "commit": "39f06b873a8449af8ff6a3eee716d3da14d63a76"
+  },
+  {
+    "repo": "tomasiser/vim-code-dark",
+    "commit": "4624dc223bf574aa9a731c2383c579847303c380"
   }
 ]
