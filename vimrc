@@ -23,7 +23,6 @@ if has('clipboard') | set clipboard=unnamedplus | endif
 " Dark theme uses cterm colors when truecolor is unavailable.
 if has('termguicolors') | set termguicolors | endif
 set background=dark
-set background=dark
 for s:kind in ['undo', 'swap', 'backup']
   call mkdir(s:vimdir . '/state/' . s:kind, 'p', 0700)
 endfor
