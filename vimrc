@@ -23,8 +23,7 @@ if has('clipboard') | set clipboard=unnamedplus | endif
 " Dark theme uses cterm colors when truecolor is unavailable.
 if has('termguicolors') | set termguicolors | endif
 set background=dark
-let g:everforest_background = 'soft'
-let g:everforest_transparent_background = 2
+set background=dark
 for s:kind in ['undo', 'swap', 'backup']
   call mkdir(s:vimdir . '/state/' . s:kind, 'p', 0700)
 endfor
@@ -134,8 +133,18 @@ if has('packages')
   packadd auto-pairs
   packadd vim-surround
   packadd editorconfig-vim
-  packadd everforest
-  colorscheme everforest
+  packadd zenbones.nvim
+  colorscheme zenwritten
+  " Keep the muted Zenwritten palette while letting a-Shell show through.
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NormalNC guibg=NONE ctermbg=NONE
+  highlight NormalFloat guibg=NONE ctermbg=NONE
+  highlight LineNr guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE ctermbg=NONE
+  highlight EndOfBuffer guibg=NONE ctermbg=NONE
+  highlight VertSplit guibg=NONE ctermbg=NONE
+  highlight StatusLine guibg=NONE ctermbg=NONE
+  highlight StatusLineNC guibg=NONE ctermbg=NONE
   if has('job') && has('channel')
     packadd vim-lsp
     packadd asyncomplete.vim

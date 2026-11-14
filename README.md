@@ -41,12 +41,12 @@ backup (or remove the new .vimrc if there was none). The optional packages under
 | Project indentation | editorconfig/editorconfig-vim |
 | LSP client | prabirshrestha/vim-lsp |
 | Automatic completion | asyncomplete.vim + asyncomplete-lsp.vim |
-| Theme | Everforest (soft dark palette; transparent editor and statusline) |
+| Theme | Zenwritten (minimal dark palette; transparent editor and statusline) |
 | Statusline | Mode, filename, modified/read-only flags, file type, cursor and position |
 | Format on save | Synchronous LSP formatting when a running server supports it |
 | Recovery | Persistent undo, swap files and write-time backup protection |
 
-Theme: Everforest in soft dark mode, with its transparency setting enabled for the editor and statusline. It enables `termguicolors` when Vim reports that feature. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
+Theme: Zenwritten, the near-monochrome dark palette from Zenbones. The editor, line number gutter, and statusline backgrounds are cleared for transparency. It enables `termguicolors` when Vim reports that feature. Fuzzy finders and Treesitter remain omitted; fzf hung Vim on the device.
 
 ## Key bindings
 
