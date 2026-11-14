@@ -24,6 +24,8 @@ Python downloads the pinned plugins over HTTPS. No vim-plug, desktop Git, Node o
 language-server installation is needed for the base editor. The installer backs
 up an existing `~/Documents/.vimrc` beside it before replacing it. Re-running is
 safe: matching pinned packages are reused; conflicting packages are not overwritten.
+It also removes the previously pinned Zenbones theme if its managed revision marker
+is intact; unrelated or modified package directories are left alone.
 
 If you already have a `~/Documents/vim` checkout, use `lg2 pull` there, then rerun
 the installer. To uninstall, restore the timestamped `.vimrc.before-ashell-*`

@@ -11,6 +11,9 @@ import urllib.request
 import zipfile
 
 SOURCE = Path(__file__).resolve().parent
+OBSOLETE_MANAGED_PACKAGES = {
+    'zenbones.nvim': '8304d8df9b823ff11e103afa62f38c39f534abe6',
+}
 
 def install(target):
     target = target.expanduser().resolve()
@@ -18,6 +21,12 @@ def install(target):
     opt = target / '.vim/pack/ashell/opt'
     opt.mkdir(parents=True, exist_ok=True)
     plugins = json.loads((SOURCE / 'plugins.lock.json').read_text())
+    for name, revision in OBSOLETE_MANAGED_PACKAGES.items():
+        destination = opt / name
+        marker = destination / '.ashell-revision'
+        if marker.exists() and marker.read_text().strip() == revision:
+            shutil.rmtree(destination)
+            print('Removed obsolete theme:', name, flush=True)
     # Download and validate every package before changing the active config.
     with tempfile.TemporaryDirectory(dir=target) as temp:
         staging = Path(temp)
